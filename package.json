@@ -1,14 +1,25 @@
 {
   "name": "vue-magick-pen",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.7",
+  "author": "kazuomatz",
+  "license": "MIT",
+  "private": false,
+  "main": "dist/vue-magick-pen.common.js",
+  "unpkg": "./dist/vue-magick-pen.umd.min.js",
+  "jsdelivr": "./dist/vue-magick-pen.umd.min.js",
+  "typings": "dist/types/index.d.ts",
+  "files": [ "dist" ],
+  "keywords": ["Vue", "Vue.js", "Snippet"],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build-bundle": "vue-cli-service build --target lib --name vue-magick-pen ./src/main.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.4",
+    "js-beautify": "^1.13.13",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -18,6 +29,10 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11",
+    "node-sass": "^4.14.1",
+    "postcss-loader": "^4.2.0",
+    "sass-loader": "^10.1.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
