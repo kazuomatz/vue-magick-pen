@@ -1,7 +1,7 @@
 <template v-slot:default="slotProps">
   <div>
     <div v-if="penKey">
-      <div v-show="editing" style="width: 100%">
+      <div v-if="editing" style="width: 100%">
         <div class="editor-wrapper" >
           <textarea v-model="innerHTML" ref="textarea" v-on:input="textInput"></textarea>
         </div>
@@ -19,9 +19,9 @@
           <button :disabled="!edited" :class="buttonClass('preview')" v-on:click="mode = 'preview'" ><i :class="buttonIcon('preview')"></i> {{ buttonLabel('preview') }}</button>
         </div>
       </div>
-      <div class="html-view" v-show="! editing && !preview">
-        <div v-on:mouseenter="onMouseEnter($event)" v-on:mouseleave="onMouseLeave($event)" :class="textOverlayClass">
-          <div class="icon" v-if="editable"><i :class="buttonIcon('edit')"></i></div>
+      <div class="html-view" v-show="!editing && !preview">
+        <div v-on:mouseenter="onMouseEnter($event)" v-on:mouseleave="onMouseLeave($event)" :class="textOverlayClass" v-if="editable">
+          <div :class="iconClass"><i :class="buttonIcon('edit')"></i></div>
           <div ref="content">
             <slot></slot>
           </div>
@@ -30,12 +30,17 @@
             {{ buttonLabel('edit') }}
           </button>
         </div>
+        <div v-else>
+          <div ref="content">
+            <slot></slot>
+          </div>
+        </div>
       </div>
-      <div class="html-view" v-show="preview">
-        <div class="icon"><i :class="buttonIcon('preview')"></i></div>
+      <div class="html-view" v-if="preview">
+        <div :class="iconClass"><i :class="buttonIcon('preview')"></i></div>
         <div class="preview">
           <div v-html="this.innerHTML"></div>
-          <div class="text-overlay preview-overlay"></div>
+          <div :class="previewOverlayClass"></div>
         </div>
         <div class="btn-wrapper preview">
           <button :class="buttonClass('cancel')" v-on:click="onCancel" ><i :class="buttonIcon('cancel')"></i> {{ buttonLabel('cancel') }}</button>
@@ -240,8 +245,16 @@ export default {
     },
     edited() {
       return this.innerHTML !== this.beforeContent
+    },
+    isGlobal() {
+      return this.penKey.slice(0,2) === 'g-'
+    },
+    iconClass() {
+      return this.isGlobal ? 'icon global' : 'icon'
+    },
+    previewOverlayClass() {
+      return this.isGlobal ? 'text-overlay preview-overlay global' :  'text-overlay preview-overlay'
     }
-
   },
   mounted () {
     if (this.currentSnippet()) {
@@ -322,6 +335,9 @@ export default {
   color: orangered;
   font-size: 1.3rem;
   background-color: #fff;
+  &.global {
+    color: #4f7fdd;
+  }
 }
 
 .text-over, .preview {
@@ -348,6 +364,9 @@ export default {
     &.preview-overlay {
       border: dotted 3px orangered;
       animation: none;
+      &.global {
+        border: dotted 3px #4f7fdd;
+      }
     }
   }
 }
