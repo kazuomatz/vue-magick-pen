@@ -1,5 +1,5 @@
 <template v-slot:default="slotProps">
-  <div>
+  <div class="magick-pen">
     <div v-if="penKey">
       <div v-if="editing" style="width: 100%">
         <div class="editor-wrapper" >
@@ -7,7 +7,7 @@
         </div>
         <div class="btn-wrapper">
           <div class="inline" v-if="versions().length > 0">
-            <label>{{ versionLabel }}</label>
+            <label class="version-label">{{ versionLabel }}</label>
             <select v-model="version" :class="selectClass">
               <option value="0">{{ currentLabel }}</option>
               <option v-for="(version,index) in versions()" :key="version.id" :value="version.id">
@@ -283,186 +283,236 @@ export default {
 </script>
 
 <style scoped lang="scss">
-*, *:before, *:after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.alert {
-  background-color: #faf0f0;
-  padding: 10px 20px;
-  border: solid 2px red;
-  margin: 0 0 10px 0;
-  span.bold {
-    font-weight: bold;
+.magick-pen {
+  *, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
   }
-}
-.editor-wrapper {
-  margin: 20px 0 5px 0;
-  textarea {
-    border: 1px solid #e4e7ea;
-    display: block;
-    width: 100%;
-    font-size: 0.875rem;
-    line-height: 1.6;
-    padding: 10px;
-    color: #000;
-    background-color: #fff;
-    outline:0 none transparent;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    resize: none;
-    &:focus {
-      outline: 0;
+
+  .alert {
+    background-color: #faf0f0;
+    padding: 10px 20px;
+    border: solid 2px red;
+    margin: 0 0 10px 0;
+
+    span.bold {
+      font-weight: bold;
     }
   }
-}
-.html-view {
-  position: relative;
-  .text-overlay {
-    position: absolute;
-    display: none;
-    top: -15px;
-    left: -15px;
-    opacity: 0.2;
-  }
-}
 
-.icon {
-  position: absolute;
-  background: transparent;
-  top: -20px;
-  left: -20px;
-  color: orangered;
-  font-size: 1.3rem;
-  &.global {
-    color: #4f7fdd;
-  }
-}
+  .editor-wrapper {
+    margin: 20px 0 5px 0;
 
-.text-over, .preview {
-  position: relative;
-  cursor: context-menu;
-  .edit-btn {
-    display: block;
-    animation-name: fadeIn;
-    animation-duration: .5s;
-    animation-timing-function: ease-out;
-  }
-  .text-overlay {
-    background-color: #f1f1f1;
-    display: block;
-    border: dotted 3px #000000;
-    border-top-left-radius: 25px;
-    animation-name: border-draw;
-    animation-duration: .5s;
-    animation-timing-function: ease-out;
-    width: calc(100% + 30px);
-    height: calc(100% + 30px);
-    top: -15px;
-    left: -15px;
-    &.preview-overlay {
-      border: dotted 3px orangered;
-      animation: none;
-      &.global {
-        border: dotted 3px #4f7fdd;
+    textarea {
+      border: 1px solid #e4e7ea;
+      display: block;
+      width: 100%;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      padding: 10px;
+      color: #000;
+      background-color: #fff;
+      outline: 0 none transparent;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      resize: none;
+
+      &:focus {
+        outline: 0;
       }
     }
   }
-}
 
-.edit-btn {
-  display: none;
-  position: absolute;
-  width: 100px;
-  height: 46px;
-  top: calc(50% - 23px);
-  left: calc(50% - 50px);
-  z-index: 9999;
-}
-
-.btn-wrapper {
-  width: 100%;
-  text-align: right;
-  padding: 10px 0;
-  &.preview {
+  .html-view {
     position: relative;
-    margin-top: 20px;
-    right: -18px;
+
+    .text-overlay {
+      position: absolute;
+      display: none;
+      top: -15px;
+      left: -15px;
+      opacity: 0.2;
+    }
   }
-  button {
-    height: 40px;
-    outline: none;
+
+  .icon {
+    position: absolute;
+    background: transparent;
+    top: -20px;
+    left: -20px;
+    width: 24px;
+    height: 24px;
+    color: orangered;
+    font-size: 1.2rem;
+
+    &.global {
+      color: #4f7fdd;
+    }
+    i {
+      &.fa, &.fas, &.fad, &.fab, &.far {
+        font-size: 1.2rem !important;
+      }
+    }
+  }
+
+  .text-over, .preview {
+    position: relative;
+    cursor: context-menu;
+
+    .edit-btn {
+      display: block;
+      animation-name: fadeIn;
+      vertical-align: middle;
+      animation-duration: .5s;
+      animation-timing-function: ease-out;
+    }
+
+    .text-overlay {
+      background-color: #f1f1f1;
+      display: block;
+      border: dotted 3px #000000;
+      border-top-left-radius: 25px;
+      animation-name: border-draw;
+      animation-duration: .5s;
+      animation-timing-function: ease-out;
+      width: calc(100% + 30px);
+      height: calc(100% + 30px);
+      top: -15px;
+      left: -15px;
+
+      &.preview-overlay {
+        border: dotted 3px orangered;
+        animation: none;
+
+        &.global {
+          border: dotted 3px #4f7fdd;
+        }
+      }
+    }
+  }
+
+  .edit-btn {
+    display: none;
+    position: absolute;
+    width: 100px;
+    height: 32px;
+    top: calc(50% - 16px);
+    left: calc(50% - 50px);
     vertical-align: middle;
-    margin-right: 5px;
+    z-index: 9999;
+    font-size: 0.75rem;
+    i {
+      &.fa, &.fas, &.fad, &.fab, &.far {
+        font-size: 1rem !important;
+        padding: 0;
+        vertical-align: middle;
+        display: inline-block;
+      }
+    }
+    [data-icon] {
+      font-size: 1rem !important;
+      vertical-align: middle;
+      padding: 0;
+      display: inline-block;
+    }
+  }
+
+  .btn-wrapper {
+    width: 100%;
+    text-align: right;
+    padding: 10px 0;
+
+    &.preview {
+      position: relative;
+      margin-top: 20px;
+      right: -18px;
+    }
+
+    button {
+      outline: none;
+      vertical-align: middle;
+      margin: 0 0 5px 7.5px;
+      display: inline-block;
+      &:disabled, &[disabled] {
+        cursor: not-allowed;
+      }
+      i {
+        &.fa, &.fas, &.fad, &.fab, &.far {
+          font-size: 1.2rem !important;
+          vertical-align: middle;
+          padding: 0;
+        }
+      }
+
+      [data-icon] {
+        font-size: 1.2rem !important;
+        vertical-align: middle;
+        padding: 0;
+      }
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 100%;
+    }
+  }
+  @keyframes border-draw {
+    0% {
+      border-top-left-radius: 0;
+      width: calc(100%);
+      height: calc(100%);
+      top: 0;
+      left: 0;
+      border-color: #aaa;
+    }
+    100% {
+      width: calc(100% + 30px);
+      height: calc(100% + 30px);
+      top: -15px;
+      left: -15px;
+      border-top-left-radius: 25px;
+      border-color: #666;
+    }
+  }
+
+  div.inline {
     display: inline-block;
-    &:last-child {
-      margin-right: 0;
+    margin-bottom: 7.5px;
+    label.version-label {
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: .8rem;
     }
-    &:disabled,&[disabled] {
-      cursor: not-allowed;
-    }
   }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
+  select.magick-pen-select {
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right 6px top 14px;
+    background-size: 8px 6px;
+    color: #000;
+    padding: 1.5px 7.5px;
+    appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    -moz-appearance: none;
+    border: solid 1px #e4e7ea;
+    outline: 0;
+    -webkit-transition: 0.3s ease all;
+    -moz-transition: 0.3s ease all;
+    -ms-transition: 0.3s ease all;
+    -o-transition: 0.3s ease all;
+    transition: 0.3s ease all;
+    font-weight: normal;
+    height: 30px;
+    margin-right: 0;
+    margin-bottom: 5px;
+    vertical-align: middle;
   }
-  100% {
-    opacity: 100%;
-  }
-}
-@keyframes border-draw {
-  0% {
-    border-top-left-radius: 0;
-    width: calc(100%);
-    height: calc(100%);
-    top: 0;
-    left: 0;
-    border-color: #aaa;
-  }
-  100% {
-    width: calc(100% + 30px);
-    height: calc(100% + 30px);
-    top: -15px;
-    left:-15px;
-    border-top-left-radius: 25px;
-    border-color: #666;
-  }
-}
-
-div.inline {
-  display: inline-block;
-  margin-right: 5px;
-  label {
-    font-weight: bold;
-    margin-right: 10px;
-  }
-}
-</style>
-<style lang="scss">
-select.magick-pen-select {
-  background-color: #fff;
-  background-repeat: no-repeat;
-  background-position: right 6px top 14px;
-  background-size: 8px 6px;
-  color: #000;
-  padding: 0.375rem 0.75rem;
-  appearance: none;
-  -webkit-appearance: none;
-  -ms-appearance: none;
-  -moz-appearance: none;
-  border: solid 1px #e4e7ea;
-  outline: 0;
-  -webkit-transition: 0.3s ease all;
-  -moz-transition: 0.3s ease all;
-  -ms-transition: 0.3s ease all;
-  -o-transition: 0.3s ease all;
-  transition: 0.3s ease all;
-  font-weight: normal;
-  height: 40px !important;
-  margin-right: 5px;
-  vertical-align: middle;
 }
 </style>
