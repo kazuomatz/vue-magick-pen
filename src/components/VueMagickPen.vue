@@ -330,11 +330,11 @@ export default {
 
 .icon {
   position: absolute;
+  background: transparent;
   top: -20px;
   left: -20px;
   color: orangered;
   font-size: 1.3rem;
-  background-color: #fff;
   &.global {
     color: #4f7fdd;
   }
