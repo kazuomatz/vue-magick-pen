@@ -92,6 +92,7 @@ export default {
     },
     onSubmit () {
       this.$refs.content.innerHTML = this.innerHTML
+      this.beforeContent = this.innerHTML
       this.mode = 'view';
       this.$emit('changed', this.innerHTML)
       if (this.config.updateSnippet) {
@@ -402,7 +403,6 @@ export default {
     left: calc(50% - 50px);
     vertical-align: middle;
     z-index: 9999;
-    font-size: 0.75rem;
     i {
       &.fa, &.fas, &.fad, &.fab, &.far {
         font-size: 1rem !important;
@@ -435,6 +435,7 @@ export default {
       vertical-align: middle;
       margin: 0 0 5px 7.5px;
       display: inline-block;
+      max-height: 32px;
       &:disabled, &[disabled] {
         cursor: not-allowed;
       }
@@ -513,6 +514,7 @@ export default {
     margin-right: 0;
     margin-bottom: 5px;
     vertical-align: middle;
+    font-size: 0.9rem;
   }
 }
 </style>
