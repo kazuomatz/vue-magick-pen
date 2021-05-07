@@ -1,6 +1,6 @@
 {
   "name": "vue-magick-pen",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "author": "kazuomatz",
   "license": "MIT",
   "private": false,
@@ -32,8 +32,7 @@
     "vue-template-compiler": "^2.6.11",
     "node-sass": "^4.14.1",
     "postcss-loader": "^4.2.0",
-    "sass-loader": "^10.1.1",
-    "vue-template-compiler": "^2.6.11"
+    "sass-loader": "^10.1.1"
   },
   "eslintConfig": {
     "root": true,

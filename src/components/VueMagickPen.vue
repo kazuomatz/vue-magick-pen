@@ -1,5 +1,5 @@
 <template v-slot:default="slotProps">
-  <div class="magick-pen">
+  <div class="magick-pen" ref="magickPen">
     <div v-if="penKey">
       <div v-if="editing" style="width: 100%">
         <div class="editor-wrapper" >
@@ -21,7 +21,12 @@
       </div>
       <div class="html-view" v-show="!editing && !preview">
         <div v-on:mouseenter="onMouseEnter($event)" v-on:mouseleave="onMouseLeave($event)" :class="textOverlayClass" v-if="editable">
-          <div :class="iconClass">
+          <div :class="iconClass + ' edit-icon'" v-on:click="showEditor">
+            <!--
+            This SVG is used in combination with some of the following libraries:
+            Font Awesome Free 5.8.2 by @fontawesome - https://fontawesome.com
+            License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+            -->
             <svg
               class="svg-inline--fa fa-edit fa-w-18"
               aria-hidden="true"
@@ -40,7 +45,7 @@
             <slot></slot>
           </div>
           <div class="text-overlay"></div>
-          <button type="button" :class="buttonClass('edit') + ' edit-btn'" v-on:click="showEditor"><i :class="buttonIcon('edit')"></i>
+          <button type="button" ref='editButton' :class="buttonClass('edit') + ' edit-btn'" v-on:click="showEditor"><i :class="buttonIcon('edit')"></i>
             {{ buttonLabel('edit') }}
           </button>
         </div>
@@ -51,7 +56,26 @@
         </div>
       </div>
       <div class="html-view" v-if="preview">
-        <div :class="iconClass"><i :class="buttonIcon('preview')"></i></div>
+        <div :class="iconClass">
+          <!--
+          This SVG is used in combination with some of the following libraries:
+          Font Awesome Free 5.8.2 by @fontawesome - https://fontawesome.com
+          License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+          -->
+          <svg  class="svg-inline--fa fa-eye fa-w-18"
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="eye"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 576 512" data-fa-i2svg="">
+            <path
+              fill="currentColor"
+              d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z">
+            </path>
+          </svg>
+        </div>
         <div class="preview">
           <div v-html="this.innerHTML"></div>
           <div :class="previewOverlayClass"></div>
@@ -96,6 +120,15 @@ export default {
       event.preventDefault()
       if(this.editable) {
         this.mouseOver = true
+        this.$nextTick(() => {
+          if (this.$refs.magickPen.clientHeight > window.innerHeight) {
+            this.$refs.editButton.style.top = (event.offsetY - (this.$refs.editButton.offsetHeight / 2)) + 'px'
+          } else {
+            this.$refs.editButton.style.top = 'calc(50% - ' + (this.$refs.editButton.offsetHeight / 2) + 'px)';
+          }
+
+          this.$refs.editButton.style.left = 'calc(50% - ' + (this.$refs.editButton.offsetWidth / 2) + 'px)';
+        });
       }
       return false
     },
@@ -364,9 +397,12 @@ export default {
     height: 24px;
     color: orangered;
     font-size: 1.2rem;
-
+    z-index: 999;
     &.global {
       color: #4f7fdd;
+    }
+    &.edit-icon {
+      cursor: pointer;
     }
     i {
       &.fa, &.fas, &.fad, &.fab, &.far {
@@ -452,7 +488,7 @@ export default {
       vertical-align: middle;
       margin: 0 0 5px 7.5px;
       display: inline-block;
-      max-height: 32px;
+      min-height: 32px;
       &:disabled, &[disabled] {
         cursor: not-allowed;
       }
@@ -517,13 +553,11 @@ export default {
     padding: 1.5px 7.5px;
     appearance: none;
     -webkit-appearance: none;
-    -ms-appearance: none;
     -moz-appearance: none;
     border: solid 1px #e4e7ea;
     outline: 0;
     -webkit-transition: 0.3s ease all;
     -moz-transition: 0.3s ease all;
-    -ms-transition: 0.3s ease all;
     -o-transition: 0.3s ease all;
     transition: 0.3s ease all;
     font-weight: normal;
